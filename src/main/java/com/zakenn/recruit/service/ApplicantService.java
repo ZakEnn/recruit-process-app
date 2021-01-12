@@ -31,7 +31,7 @@ public class ApplicantService {
         applicantRepository.save(applicant);
 
         Map<String, Object> vars = Collections.<String, Object>singletonMap("applicant", applicant);
-        runtimeService.startProcessInstanceByKey("hireProcessWithJpa", vars);
+        runtimeService.startProcessInstanceByKey("Recruit_Process", vars);
     }
 
 }
