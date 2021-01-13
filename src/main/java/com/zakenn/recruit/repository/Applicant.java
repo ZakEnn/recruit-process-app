@@ -29,8 +29,6 @@ public class Applicant {
 
     private String message;
 
-    private String resume;
-
     private String recruiterMail;
 
 }

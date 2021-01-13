@@ -1,5 +1,6 @@
 package com.zakenn.recruit.rest;
 
+import com.zakenn.recruit.dto.ApplicationProcessDto;
 import com.zakenn.recruit.repository.Applicant;
 import com.zakenn.recruit.repository.ApplicantRepository;
 import com.zakenn.recruit.service.ApplicantService;
@@ -22,7 +23,7 @@ public class HireProcessRestController {
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/start-hire-process", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> startHireProcess(@RequestBody Map<String, String> data) {
+    public ResponseEntity<?> startHireProcess(@RequestBody ApplicationProcessDto data) {
         applicantService.applyForJob(data);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
