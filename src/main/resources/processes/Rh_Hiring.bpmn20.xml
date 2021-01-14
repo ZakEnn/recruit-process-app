@@ -1,36 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"  xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="8.0.1">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"  xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="8.0.1">
   <process id="recruit_Process" name="recruit process" isExecutable="true">
     <documentation>Hire an Applicant</documentation>
     <startEvent id="startEvent" name="start"></startEvent>
     <sequenceFlow id="flow2" sourceRef="startEvent" targetRef="storeResume" />
-    <serviceTask id="storeResume" name="storeResume"  activiti:expression="${resumeService.storeResume(applicant.email, resume)}" >
+    <serviceTask id="storeResume" name="storeResume"  camunda:expression="${resumeService.storeResume(applicant.email, resume)}" >
       <documentation>Store CV</documentation>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="storeResume" targetRef="reviewApplication" />
-    <userTask id="reviewApplication" name="reviewApplication" activiti:assignee="${applicant.recruiterMail}" >
-      <incoming>Flow_181ghlj</incoming>
-      <outgoing>Flow_0nobc60</outgoing>
+    <userTask id="reviewApplication" name="reviewApplication" camunda:candidateGroups="hr-managers" camunda:assignee="${applicant.recruiterMail}" >
     </userTask>
-    <exclusiveGateway id="Gateway_16eqldn">
-      <incoming>Flow_0nobc60</incoming>
-      <outgoing>Flow_0uzl212</outgoing>
-      <outgoing>Flow_0xitvzm</outgoing>
-    </exclusiveGateway>
-    <sequenceFlow id="flow4_1" sourceRef="reviewApplication" targetRef="sendApprovalEmail" >
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${telephoneInterviewOutcome == true}]]></conditionExpression>
+    <exclusiveGateway id="reviewdApplication"/>
+    <sequenceFlow id="flow4_1" sourceRef="reviewApplication" targetRef="sendApproval" >
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewCvOutcome == true}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow4_2" sourceRef="reviewApplication" targetRef="sendDeclineEmail" >
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${telephoneInterviewOutcome == false}]]></conditionExpression>
+    <sequenceFlow id="flow4_2" sourceRef="reviewApplication" targetRef="sendDecline" >
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewCvOutcome == false}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="sendDeclineEmail" name="SendRejectionMail">
-      <incoming>Flow_0xitvzm</incoming>
-    </serviceTask>
-    <serviceTask id="sendApprovalEmail" name="sendApprovalEmail">
-      <incoming>Flow_0uzl212</incoming>
-    </serviceTask>
-    <endEvent id="endEventApproval" name="accepted"/>
-    <endEvent id="endEventDecline" name="declined"/>
-  </process>
+    <serviceTask id="sendDecline" name="sendRejection" camunda:expression="${notificationService.sendMessage(applicant.name, response.rejection)}">
+      </serviceTask>
+      <serviceTask id="sendApproval" name="sendApproval"  camunda:expression="${notificationService.sendMessage(applicant.name, response.approval)}">
+      </serviceTask>
+    </process>
 
-</definitions>
+  </definitions>

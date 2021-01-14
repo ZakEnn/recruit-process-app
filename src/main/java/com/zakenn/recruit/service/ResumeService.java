@@ -16,15 +16,15 @@ public class ResumeService {
     private String restResumeUri;
 
     public void storeResume(String applicantName, String resume) {
-       log.info("Storing resume ...");
-       log.info("applicantName: " + applicantName);
+        log.info("Storing resume ...");
+        log.info("applicantName: " + applicantName);
         RestTemplate restTemplate = new RestTemplate();
         String url = restResumeUri.concat("applicant/"+applicantName+"/store-cv");
 
         log.info("store resume of applicant : " + applicantName);
         log.info("resume base64 = " + resume);
         log.info("trigger post url : " + url);
-        restTemplate.postForEntity(url, resume, String.class);
+    //    restTemplate.postForEntity(url, resume, String.class);
     }
 
 }
