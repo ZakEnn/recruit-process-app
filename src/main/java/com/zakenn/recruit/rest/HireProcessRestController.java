@@ -24,8 +24,8 @@ public class HireProcessRestController {
     @RequestMapping(value = "/start-hire-process", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> startHireProcess(@RequestBody ApplicationProcessDto data) {
-        applicantService.applyForJob(data);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        String processId = applicantService.applyForJob(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(processId);
     }
 
 }

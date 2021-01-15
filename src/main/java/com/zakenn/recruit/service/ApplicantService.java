@@ -26,42 +26,33 @@ public class ApplicantService {
 
     @Autowired
     private ApplicantRepository applicantRepository;
-
+    
     @Autowired
-    RepositoryService repositoryService;
+    RecruiterService recruiterService;
 
-    @Autowired
-    TaskService taskService;
-
-    public ResponseEntity<String> applyForJob(ApplicationProcessDto applicationsData){
-        Applicant applicant =  Applicant.builder()
-                                    .name(applicationsData.getNameApplicant())
-                                    .email(applicationsData.getEmailApplicant())
-                                    .phoneNumber(applicationsData.getPhoneNumberApplicant())
-                                    .object(applicationsData.getObjectMail())
-                                    .message(applicationsData.getContentMail())
-                                    .recruiterMail(applicationsData.getEmailRecruiter())
-                                    .build();
-
-        applicantRepository.save(applicant);
+    public String applyForJob(ApplicationProcessDto applicationsData){
+        Applicant applicant = saveAndGetApplicant(applicationsData);
 
         Map<String, Object> vars = Map.of("applicant", applicant, "resume", applicationsData.getResumeAttachment(), "response", ResponseUtils.defaultResponseData);
 
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("recruit_Process", vars);
-
-        Task task = taskService.createTaskQuery()
-                .processInstanceId(processInstance.getId())
-                .taskAssignee("recruiter@gmail.com")
-                .singleResult();
-         log.info("task first :  " + task);
-        // Completing the phone interview with success should trigger two new tasks
-        Map<String, Object> taskVariables = new HashMap<String, Object>();
-        taskVariables.put("reviewCvOutcome", true);
-        taskService.complete(task.getId(), taskVariables);
-        log.info("task end :  " + task);
-
+        recruiterService.reviewResume(applicationsData.getEmailRecruiter(), processInstance.getProcessInstanceId(), true);
         log.info("END  processInstanceId : " + processInstance.getProcessInstanceId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(processInstance.getProcessInstanceId());
+        return processInstance.getProcessInstanceId();
     }
+
+    private Applicant saveAndGetApplicant(ApplicationProcessDto applicationsData) {
+        Applicant applicant =  Applicant.builder()
+                .name(applicationsData.getNameApplicant())
+                .email(applicationsData.getEmailApplicant())
+                .phoneNumber(applicationsData.getPhoneNumberApplicant())
+                .object(applicationsData.getObjectMail())
+                .message(applicationsData.getContentMail())
+                .recruiterMail(applicationsData.getEmailRecruiter())
+                .build();
+
+        return applicantRepository.save(applicant);
+    }
+
 
 }
