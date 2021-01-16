@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"  xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="8.0.1">
-  <process id="recruit_Process" name="recruit process" isExecutable="true">
+  <process id="recruit_process" name="recruit process" isExecutable="true">
     <documentation>Hire an Applicant</documentation>
     <startEvent id="startEvent" name="start"></startEvent>
     <sequenceFlow id="flow2" sourceRef="startEvent" targetRef="storeResume" />

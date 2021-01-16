@@ -22,33 +22,16 @@ import java.util.Map;
 @CommonsLog
 public class ApplicantService {
     @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
     private ApplicantRepository applicantRepository;
-    
-    @Autowired
-    RecruiterService recruiterService;
 
-    public String applyForJob(ApplicationProcessDto applicationsData){
-        Applicant applicant = saveAndGetApplicant(applicationsData);
-
-        Map<String, Object> vars = Map.of("applicant", applicant, "resume", applicationsData.getResumeAttachment(), "response", ResponseUtils.defaultResponseData);
-
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("recruit_Process", vars);
-        recruiterService.reviewResume(applicationsData.getEmailRecruiter(), processInstance.getProcessInstanceId(), true);
-        log.info("END  processInstanceId : " + processInstance.getProcessInstanceId());
-        return processInstance.getProcessInstanceId();
-    }
-
-    private Applicant saveAndGetApplicant(ApplicationProcessDto applicationsData) {
+    public Applicant saveAndGetApplicant(ApplicationProcessDto applicationsProcessDto) {
         Applicant applicant =  Applicant.builder()
-                .name(applicationsData.getNameApplicant())
-                .email(applicationsData.getEmailApplicant())
-                .phoneNumber(applicationsData.getPhoneNumberApplicant())
-                .object(applicationsData.getObjectMail())
-                .message(applicationsData.getContentMail())
-                .recruiterMail(applicationsData.getEmailRecruiter())
+                .name(applicationsProcessDto.getNameApplicant())
+                .email(applicationsProcessDto.getEmailApplicant())
+                .phoneNumber(applicationsProcessDto.getPhoneNumberApplicant())
+                .object(applicationsProcessDto.getObjectMail())
+                .message(applicationsProcessDto.getContentMail())
+                .recruiterMail(applicationsProcessDto.getEmailRecruiter())
                 .build();
 
         return applicantRepository.save(applicant);

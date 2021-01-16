@@ -1,18 +1,19 @@
 package com.zakenn.recruit.repository;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.List;
+import javax.persistence.*;
+
+import java.util.Date;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Data
+@EntityListeners(AuditingEntityListener.class)
 public class Applicant {
 
     @Id
@@ -30,5 +31,8 @@ public class Applicant {
     private String message;
 
     private String recruiterMail;
+
+    @CreatedDate
+    private Date date;
 
 }
