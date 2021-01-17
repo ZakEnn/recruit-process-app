@@ -19,10 +19,7 @@ public class ResumeService {
         log.info("Storing resume ...");
         RestTemplate restTemplate = new RestTemplate();
         String url = restResumeUri.concat("applicant/"+applicantName+"/store-cv");
-        log.info("store resume of applicant : " + applicantName);
-        log.info("resume base64 = " + resume);
-        log.info("trigger post url : " + url);
-    //    restTemplate.postForEntity(url, resume, String.class);
+        restTemplate.postForEntity(url, resume, String.class);
     }
 
 }
