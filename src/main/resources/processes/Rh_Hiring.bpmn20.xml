@@ -4,11 +4,11 @@
     <documentation>Hire an Applicant</documentation>
     <startEvent id="startEvent" name="start"></startEvent>
     <sequenceFlow id="flow2" sourceRef="startEvent" targetRef="storeResume" />
-    <serviceTask id="storeResume" name="storeResume"  activiti:expression="${resumeService.storeResume(applicant.email, resume)}" >
+    <serviceTask id="storeResume" name="storeResume"  activiti:expression="${resumeService.storeResume(application.resumeId, resumeB64)}" >
       <documentation>Store CV</documentation>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="storeResume" targetRef="reviewApplication" />
-    <userTask id="reviewApplication" name="reviewApplication" activiti:candidateGroups="hr-managers" activiti:assignee="${applicant.recruiterMail}" >
+    <userTask id="reviewApplication" name="reviewApplication" activiti:candidateGroups="hr-managers" activiti:assignee="${application.recruiterMail}" >
     </userTask>
     <exclusiveGateway id="reviewdApplication"/>
     <sequenceFlow id="flow4_1" sourceRef="reviewApplication" targetRef="sendApproval" >
@@ -17,9 +17,9 @@
     <sequenceFlow id="flow4_2" sourceRef="reviewApplication" targetRef="sendDecline" >
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reviewCvOutcome == false}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="sendDecline" name="sendRejection" activiti:expression="${notificationService.sendMessage(applicant.name, response.rejection)}">
+    <serviceTask id="sendDecline" name="sendRejection" activiti:expression="${notificationService.sendMessage(application.name, response.rejection)}">
       </serviceTask>
-      <serviceTask id="sendApproval" name="sendApproval"  activiti:expression="${notificationService.sendMessage(applicant.name, response.approval)}">
+      <serviceTask id="sendApproval" name="sendApproval"  activiti:expression="${notificationService.sendMessage(application.name, response.approval)}">
       </serviceTask>
       <endEvent id="endEventApproval" name="accepted"/>
       <endEvent id="endEventDecline" name="declined"/>

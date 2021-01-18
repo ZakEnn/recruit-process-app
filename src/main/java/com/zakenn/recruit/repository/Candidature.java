@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Applicant {
+public class Candidature {
 
     @Id
     @GeneratedValue
@@ -29,6 +29,8 @@ public class Applicant {
     private String object;
 
     private String message;
+
+    private String resumeId;
 
     private String recruiterMail;
 
