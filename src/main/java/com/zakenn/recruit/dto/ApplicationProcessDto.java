@@ -12,5 +12,4 @@ public class ApplicationProcessDto {
     private String contentMail;
     private String resumeAttachment;
     private String emailRecruiter;
-
 }

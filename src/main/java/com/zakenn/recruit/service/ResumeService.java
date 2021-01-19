@@ -22,7 +22,7 @@ public class ResumeService {
         resumeData.put("resumeId", resumeId);
         resumeData.put("resumeB64", resumeB64);
         String url = restResumeUri.concat("/store-cv");
-    //    restTemplate.postForEntity(url, resumeData, Map.class);
+        restTemplate.postForEntity(url, resumeData, Map.class);
     }
 
 }

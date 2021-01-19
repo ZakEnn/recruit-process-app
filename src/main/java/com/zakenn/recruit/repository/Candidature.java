@@ -37,4 +37,5 @@ public class Candidature {
     @CreatedDate
     private Date date;
 
+    private String processId;
 }
