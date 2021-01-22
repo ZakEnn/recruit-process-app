@@ -17,7 +17,6 @@ public class HireProcessRestController {
     @Autowired
     ProcessService processService;
 
-
     @PostMapping(value = "/start-process/{processName}")
     public ResponseEntity<String> startHireProcess(@PathVariable String processName, @RequestBody ApplicationProcessDto data) {
         String processId = processService.applyForJob(data, processName);

@@ -12,7 +12,7 @@ import java.util.Map;
 @CommonsLog
 public class ResumeService {
 
-    @Value("${resume.wsip:http://localhost:8084/ws-resume/ }")
+    @Value("${resume.wsip}")
     private String restResumeUri;
 
     public void storeResume(String resumeId, String resumeB64) {
@@ -22,7 +22,7 @@ public class ResumeService {
         resumeData.put("resumeId", resumeId);
         resumeData.put("resumeB64", resumeB64);
         String url = restResumeUri.concat("/store-cv");
-        restTemplate.postForEntity(url, resumeData, Map.class);
+        restTemplate.postForObject(url, resumeData, Map.class);
     }
 
 }
