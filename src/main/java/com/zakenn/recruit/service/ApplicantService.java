@@ -41,7 +41,7 @@ public class ApplicantService {
 
 
     public ApplicationProcessDto candidatureToApplicationProcessDto(Candidature candidature) {
-        String wsipResume = restResumeUri.trim() + candidature.getResumeId();
+        String wsipResume = restResumeUri.trim() + "resumes/" +candidature.getResumeId();
         ApplicationProcessDto applicationProcessDto = new ApplicationProcessDto();
         applicationProcessDto.setEmailApplicant(candidature.getEmail());
         applicationProcessDto.setNameApplicant(candidature.getName());

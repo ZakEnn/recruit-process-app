@@ -11,6 +11,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -62,6 +63,7 @@ public class ProcessService {
                     Optional<Candidature> candidature = applicantService.findByProcessId(task.getProcessInstanceId());
                     return applicantService.candidatureToApplicationProcessDto(candidature.orElse(new Candidature()));
                 })
+                .filter(candidature -> StringUtils.hasLength(candidature.getEmailApplicant()))
                 .collect(Collectors.toList());
     }
 
