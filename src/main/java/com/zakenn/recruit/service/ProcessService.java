@@ -39,7 +39,7 @@ public class ProcessService {
         return processInstance.getProcessInstanceId();
     }
 
-    public void completeReviewTask(String processInstanceId, ReviewTaskDto reviewTaskDto){
+    public void completeReviewResumeTask(String processInstanceId, ReviewTaskDto reviewTaskDto){
         log.info("Start task reviewCvOutcome  with processId : " + processInstanceId + " and data :  " + reviewTaskDto);
         Task task = taskService.createTaskQuery()
                 .processInstanceId(processInstanceId)
@@ -53,6 +53,21 @@ public class ProcessService {
         taskService.complete(task.getId(), taskVariables);
         log.info("End task :  " + task);
         log.info("***************  End processID :  " + processInstanceId + " ********************");
+    }
+
+    public void completeReviewCallTask(String processInstanceId, ReviewTaskDto reviewTaskDto){
+        log.info("Start task reviewCallOutcome  with processId : " + processInstanceId + " and data :  " + reviewTaskDto);
+        Task task = taskService.createTaskQuery()
+                .processInstanceId(processInstanceId)
+                .taskAssignee(reviewTaskDto.getRecruiterMail())
+                .singleResult();
+
+        if(task == null) throw new ProcessException( "Review task not found for processId : " + processInstanceId);
+
+        Map<String, Object> taskVariables = new HashMap<String, Object>();
+        taskVariables.put("reviewCallOutcome", reviewTaskDto.getIsAccepted());
+        taskService.complete(task.getId(), taskVariables);
+        log.info("End task :  " + task);
     }
 
     public List<ApplicationProcessDto> getApplicationsByAssignee(String assignee) {

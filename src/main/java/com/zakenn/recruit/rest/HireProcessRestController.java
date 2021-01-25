@@ -25,7 +25,13 @@ public class HireProcessRestController {
 
     @PostMapping(value = "/process/{processId}/review-resume")
     public ResponseEntity<?> reviewResumeTask(@PathVariable String processId, @RequestBody ReviewTaskDto reviewTaskDto) {
-       processService.completeReviewTask(processId, reviewTaskDto);
+       processService.completeReviewResumeTask(processId, reviewTaskDto);
+        return ResponseEntity.status(HttpStatus.OK).body(processId);
+    }
+
+    @PostMapping(value = "/process/{processId}/review-call")
+    public ResponseEntity<?> reviewCallTask(@PathVariable String processId, @RequestBody ReviewTaskDto reviewTaskDto) {
+        processService.completeReviewCallTask(processId, reviewTaskDto);
         return ResponseEntity.status(HttpStatus.OK).body(processId);
     }
 
